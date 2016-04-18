@@ -1,0 +1,129 @@
+---
+title: "Assign5"
+author: "Erica Kilbride"
+date: "March 29, 2016"
+output: html_document
+---
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r}
+setwd("/Users/erica_kilbride/Downloads")
+library(streamR)
+
+load("all_tweets.rda")
+
+topic <- c("Religion", "Immigration", "Economy", "Healthcare", "Military", "Gun Control", "China", "Trade", "Race", "Climate Change")
+regexes <- list(c("(God|Bless|Spiritual|Lord|Amen|Muslim|Islam)","Religion"),
+                c("(Migrant|Border|Immigrant|Refugee|Visa|Citizen|Syria)","Immigration"),
+                c("(GDP|Economy|Export|Import|Employ)","Economy"),
+                c("(Obamacare|Health|Insurance|illness|doctor)","Healthcare"),
+                c("(Army|Military|Troop|Marines|Navy|War)","Military"),
+                c("(Gun|2ndAmendment|Shoot|Arms|Rifle|Weapon|NRA)","Gun Control"),
+                c("(China|Chinese|Shanghai|Beijing|Asia)","China"),
+                c("(Trade|PTT|Export|Import|Tariff)","Trade"),
+                c("(Blacklivesmatter|Race|Color|White|Racial|Black)","Race"),
+                c("(Weather|Global Warming|glacier|Temp|polar)","Climate Change"))
+#Create a vector, the same length as the df
+output_vector <- character(nrow(all_tweets))
+
+#For each regex..
+for(i in seq_along(regexes)){
+  
+  #Grep through d$name, and when you find matches, insert the relevant 'tag' into
+  #The output vector
+  output_vector[grepl(x = all_tweets$text,ignore.case = TRUE, pattern = regexes[[i]][1])] <- regexes[[i]][2]
+  
+} 
+
+#Insert that now-filled output vector into the dataframe
+all_tweets$topic <- output_vector
+tweet_all <- subset(all_tweets, all_tweets$topic != "")
+table(tweet_all$topic)
+candidates <- c("Bernie", "Hillary", "Marco", "Ted", "Donald")
+regexes <- list(c("(Bernie|Sanders|BernieSanders|Feelthebern)","Bernie"),
+                c("(Ted|Cruz|Tedcruz)","Ted"),
+                c("(Donald|Trump|Donaldtrump)","Donald"),
+                c("(Hillary|Clinton|Hillaryclinton|HRC|Hills)","Hillary"))
+#Create a vector, the same length as the df
+output_v <- character(nrow(tweet_all))
+#For each regex..
+for(i in seq_along(regexes)){
+  
+  #Grep through d$name, and when you find matches, insert the relevant 'tag' into
+  #The output vector
+  output_v[grepl(x = tweet_all$text,ignore.case = TRUE, pattern = regexes[[i]][1])] <- regexes[[i]][2]
+}
+  
+output_v
+#Insert that now-filled output vector into the dataframe
+tweet_all$candidate <- output_v
+tweet_all <- subset(tweet_all, tweet_all$candidate != "")
+View(tweet_all)
+tweet_all$party <- ifelse(tweet_all$candidate %in% c("Bernie", "Hillary"), "Democrat", "Republican")
+View(tweet_all)
+tweet_all$day <- as.Date(tweet_all$created_at, format="%a %b %d %H:%M:%S")
+Bernie <- subset(tweet_all, tweet_all$candidate == "Bernie")
+Hillary <- subset(tweet_all, tweet_all$candidate == "Hillary")
+Ted <- subset(tweet_all, tweet_all$candidate == "Ted")
+Donald <- subset(tweet_all, tweet_all$candidate == "Donald")
+
+Dem <- subset(tweet_all, tweet_all$party == "Democrat")
+Rep <- subset(tweet_all, tweet_all$party == "Republican")
+subs <- subset(Hillary, Hillary$topic == "Healthcare")
+View(subs)
+
+topic_count <-function(sub){
+  table(sub$topic)
+}
+R_topic <- topic_count(Rep)
+D_topic <- topic_count(Dem)
+Hil_topic <- topic_count(Hillary)
+Bern_topic <- topic_count(Bernie)
+Ted_topic <- topic_count(Ted)
+Trump_topic <- topic_count(Donald)
+
+as.data.frame(R_topic)
+Hillary$topic
+as.data.frame(table(Ted$topic))
+View(Hillary)
+
+setwd("/Users/erica_kilbride/Documents/DataViz")
+library(plyr)
+hilbyday <- as.data.frame(table(Hillary$topic,Hillary$day))
+hilbyday <- rename(hilbyday, c("Var1" = "group", "Var2" = "date", "Freq" = "value"))
+hilbyday <- subset(hilbyday, date!="2016-03-26")
+write.csv(hilbyday, "hilbyday.csv")
+
+bernbyday <- as.data.frame(table(Bernie$topic,Bernie$day))
+bernbyday <- rename(bernbyday, c("Var1" = "group", "Var2" = "date", "Freq" = "value"))
+bernbyday <- subset(bernbyday, date!="2016-03-26")
+write.csv(bernbyday, "bernbyday.csv")
+
+
+trumpbyday <- as.data.frame(table(Donald$topic,Donald$day))
+trumpbyday <- rename(trumpbyday, c("Var1" = "group", "Var2" = "date", "Freq" = "value"))
+trumpbyday <- subset(trumpbyday, date!="2016-03-26")
+write.csv(trumpbyday, "trumpbyday.csv")
+
+tedbyday <- as.data.frame(table(Ted$topic,Ted$day))
+tedbyday <- rename(tedbyday, c("Var1" = "group", "Var2" = "date", "Freq" = "value"))
+tedbyday <- subset(tedbyday, date!="2016-03-26")
+write.csv(tedbyday, "tedbyday.csv")
+
+Repbyday <- as.data.frame(table(Rep$topic,Rep$day))
+Repbyday <- rename(Repbyday, c("Var1" = "group", "Var2" = "date", "Freq" = "value"))
+Repbyday <- subset(Repbyday, date!="2016-03-26")
+write.csv(Repbyday, "Repbyday.csv")
+
+
+Dembyday <- as.data.frame(table(Dem$topic,Dem$day))
+Dembyday <- rename(Dembyday, c("Var1" = "group", "Var2" = "date", "Freq" = "value"))
+Dembyday <- subset(Dembyday, date!="2016-03-26")
+write.csv(Dembyday, "Dembyday.csv")
+
+
+```
+
