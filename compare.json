@@ -1,0 +1,30 @@
+{ "name": "compare",
+"children":[
+    {
+ "name": "Everyone",
+ "children": [
+  {
+   "name": "Mentions",
+   "children": [
+      {"name": "Hillary Clinton", "size": 2685757},
+      {"name": "Donald Trump", "size": 4753346},
+      {"name": "Ted Cruz", "size": 2335410},
+      {"name": "Bernie Sanders", "size": 2887200}
+     ]
+   }
+ ]
+},
+
+{
+  "name": "The code won't work when I take this out",
+   "children": [
+
+   ]
+
+
+   }
+
+
+
+ ]
+}
