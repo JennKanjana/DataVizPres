@@ -16,15 +16,15 @@ library(streamR)
 load("all_tweets.rda")
 
 topic <- c("Religion", "Immigration", "Economy", "Healthcare", "Military", "Gun Control", "China", "Trade", "Race", "Climate Change")
-regexes <- list(c("(God|Bless|Spiritual|Lord|Amen|Muslim|Islam)","Religion"),
-                c("(Migrant|Border|Immigrant|Refugee|Visa|Citizen|Syria)","Immigration"),
-                c("(GDP|Economy|Export|Import|Employ)","Economy"),
-                c("(Obamacare|Health|Insurance|illness|doctor)","Healthcare"),
+regexes <- list(c("(God|Bless|Spiritual|Lord|Amen|Muslim|Islam|Jesus|Hallelujah)","Religion"),
+                c("(Migrant|Border|Immigrant|Refugee|Visa|Citizen|Syria|undocumented)","Immigration"),
+                c("(GDP|Economy|Growth|Jobs|Employ)","Economy"),
+                c("(Obamacare|Health|Insurance|illness|doctor|ACA)","Healthcare"),
                 c("(Army|Military|Troop|Marines|Navy|War)","Military"),
                 c("(Gun|2ndAmendment|Shoot|Arms|Rifle|Weapon|NRA)","Gun Control"),
-                c("(China|Chinese|Shanghai|Beijing|Asia)","China"),
-                c("(Trade|PTT|Export|Import|Tariff)","Trade"),
-                c("(Blacklivesmatter|Race|Color|White|Racial|Black)","Race"),
+                c("(China|Chinese|Shanghai|Beijing|Asia|Communist|YellowPeril)","China"),
+                c("(Trade|PTT|Export|Import|Tariff|TPP)","Trade"),
+                c("(Blacklivesmatter|Race|Color|White|Racial|Black|AffirmativeAction)","Race"),
                 c("(Weather|Global Warming|glacier|Temp|polar)","Climate Change"))
 #Create a vector, the same length as the df
 output_vector <- character(nrow(all_tweets))
@@ -126,4 +126,3 @@ write.csv(Dembyday, "Dembyday.csv")
 
 
 ```
-
